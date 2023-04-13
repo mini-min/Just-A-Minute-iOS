@@ -45,7 +45,7 @@ struct ContentView: View {
                                 .font(.title2).bold()
                                 .foregroundColor(.green)
                                 .padding(.bottom, 3)
-                            Text("Neck stretching using AR technology")
+                            Text("Find the letter while moving the camera. You can stretch your neck naturally with the game.")
                                 .multilineTextAlignment(.center)
                         }
                         VStack(alignment: .center) {
@@ -56,7 +56,7 @@ struct ContentView: View {
                                 .font(.title2).bold()
                                 .foregroundColor(.green)
                                 .padding(.bottom, 3)
-                            Text("Do eye exercises while following the ball")
+                            Text("Do eye exercises while following a moving ball. The ball provides two movements.")
                                 .multilineTextAlignment(.center)
                         }
                          
@@ -68,7 +68,7 @@ struct ContentView: View {
                                 .font(.title2).bold()
                                 .foregroundColor(.green)
                                 .padding(.bottom, 3)
-                            Text("Meditation time with relax sound")
+                            Text("This app Provides a one-minute meditation timer with the most comfortable sound.")
                                 .multilineTextAlignment(.center)
                         }
                     }
@@ -93,5 +93,11 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(.stack)
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
