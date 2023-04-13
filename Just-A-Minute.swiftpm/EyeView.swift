@@ -9,9 +9,9 @@ import SwiftUI
 
 struct EyeView: View {
     
-    @State var positionX = -250
-    @State var positionY = -250
-        
+    @State var position = -450
+    @State var moveX: Bool = true
+    
     var body: some View {
         
         Color(.black)
@@ -27,23 +27,33 @@ struct EyeView: View {
                     
                     Spacer()
                     
-                    Circle()
-                        .fill(RadialGradient(colors: [.white, .gray.opacity(0.9)], center: .topLeading, startRadius: 40, endRadius: 90))
-                        .frame(width: 70, height: 70)
-                        .offset(x: CGFloat(positionX))
-    
-                        .animation(Animation.default.repeatForever(autoreverses: true).speed(0.2))
-                    
-                        .onAppear() {
-                            positionX = 250
-                        }
+                    if moveX {
+                        Circle()
+                            .fill(RadialGradient(colors: [.white, .gray.opacity(0.9)], center: .topLeading, startRadius: 40, endRadius: 90))
+                            .frame(width: 70, height: 70)
+                            .offset(x: CGFloat(position))
+                            .animation(Animation.default.repeatForever(autoreverses: true).speed(0.1))
+                            .onAppear() {
+                                position = 450
+                            }
+                    } else {
+                        Circle()
+                            .fill(RadialGradient(colors: [.white, .gray.opacity(0.9)], center: .topLeading, startRadius: 40, endRadius: 90))
+                            .frame(width: 70, height: 70)
+                            .offset(y: CGFloat(position))
+                            .animation(Animation.default.repeatForever(autoreverses: true).speed(0.1))
+                            .onAppear() {
+                                position = -450
+                            }
+                    }
                     
                     Spacer()
                     
                     HStack(spacing: 50) {
                         Button(action: {
+                            moveX == true ? (moveX = false) : (moveX = true)
                         }) {
-                            Text("Start")
+                            Text("Change move")
                                 .font(.headline)
                                 .bold()
                                 .padding()
@@ -64,7 +74,6 @@ struct EyeView: View {
                                 .cornerRadius(15)
                         }
                     }
-                    
                     .padding(.bottom, 50)
                 }
                 
