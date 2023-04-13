@@ -7,13 +7,10 @@
 
 import SwiftUI
 import RealityKit
-import ARKit
 
 struct NeckView: View {
-    @State private var anchorEntity = AnchorEntity()
-
     var body: some View {
-        ARViewContainer(anchorEntity: $anchorEntity)
+        return ARContainer()
             .edgesIgnoringSafeArea(.all)
             .navigationBarBackButtonHidden()
             .overlay {
@@ -33,70 +30,60 @@ struct NeckView: View {
                     .padding(.horizontal)
                 }
             }
-
     }
+    
 }
 
-struct ARViewContainer: UIViewRepresentable {
-    
-    @Binding var anchorEntity: AnchorEntity
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    func makeUIView(context: Context) -> some ARView {
-        
+struct ARContainer: UIViewRepresentable {
+    func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
+        arView.cameraMode = .ar
         
-        let config = ARFaceTrackingConfiguration()
-        config.maximumNumberOfTrackedFaces = 1
+        // Notice Text
+        let noticeText: MeshResource = .generateText("Turn the camera and find the hidden word 'WWDC'",
+                                                     font: .boldSystemFont(ofSize: 18),
+                                                     alignment: .center)
+        let noticematerial = SimpleMaterial(color: .black, isMetallic: false)
+        let noticeEntity = ModelEntity(mesh: noticeText, materials: [noticematerial])
+        let noticeAnchor = AnchorEntity(world: [-250, 0, -500])
+        noticeAnchor.addChild(noticeEntity)
+        arView.scene.anchors.append(noticeAnchor)
         
-        arView.session.run(config)
-        arView.session.delegate = context.coordinator
+        // First W Text
+        let firstWText: MeshResource = .generateText("W",
+                                                     font: .boldSystemFont(ofSize: 10))
+        let findMaterial = SimpleMaterial(color: .green, isMetallic: true)
+        let firstWEntity = ModelEntity(mesh: firstWText, materials: [findMaterial])
+        let firstWAnchor = AnchorEntity(world: [0, 150, -100])
+        firstWAnchor.addChild(firstWEntity)
+        arView.scene.anchors.append(firstWAnchor)
+        
+        // Second W Text
+        let secondWText: MeshResource = .generateText("W",
+                                                      font: .boldSystemFont(ofSize: 10))
+        let secondWEntity = ModelEntity(mesh: secondWText, materials: [findMaterial])
+        let secondWAnchor = AnchorEntity(world: [0, -200, -50])
+        secondWAnchor.addChild(secondWEntity)
+        arView.scene.anchors.append(secondWAnchor)
+        
+        // D Text
+        let dText: MeshResource = .generateText("D",
+                                                font: .boldSystemFont(ofSize: 10))
+        let dEntity = ModelEntity(mesh: dText, materials: [findMaterial])
+        let dAnchor = AnchorEntity(world: [-200, 0, -50])
+        dAnchor.addChild(dEntity)
+        arView.scene.anchors.append(dAnchor)
+        
+        // C Text
+        let cText: MeshResource = .generateText("C",
+                                                font: .boldSystemFont(ofSize: 10))
+        let cEntity = ModelEntity(mesh: cText, materials: [findMaterial])
+        let cAnchor = AnchorEntity(world: [200, 0, -50])
+        cAnchor.addChild(cEntity)
+        arView.scene.anchors.append(cAnchor)
         
         return arView
-        
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
-        uiView.scene.anchors.append(anchorEntity)
-    }
-}
-
-class Coordinator: NSObject, ARSessionDelegate {
-    
-    var arViewContainer: ARViewContainer
-    
-    // let modelPath = Bundle.main.url(forResource: "Face", withExtension: "rcproject")
-    // let model = try! Entity.load(contentsOf: modelPath!)
-    // let model1 = try! Face.loadFace1()
-    // let model2 = try! Face.loadFace2()
-        
-    init(_ control: ARViewContainer) {
-        self.arViewContainer = control
-    }
-    
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        
-        // arViewContainer.anchorEntity.addChild(model1)
-        
-    }
-    
-    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        guard let faceAnchor = anchors.first as? ARFaceAnchor else { return }
-        
-        let mouthOpen = faceAnchor.blendShapes[.jawOpen] as! Float
-        let mouthSmileLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
-        let mouthSmileRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
-        
-//        if mouthOpen > 0.5 {
-//            model1.notifications.action1.post()
-//        }
-//
-//        if mouthSmileLeft > 0.5 && mouthSmileRight > 0.5 {
-//            model2.notifications.action2.post()
-//        }
-    }
+    func updateUIView(_ uiView: ARView, context: Context) { }
 }
