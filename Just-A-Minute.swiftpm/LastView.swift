@@ -36,9 +36,3 @@ struct LastView: View {
         }
     }
 }
-
-struct LastView_Previews: PreviewProvider {
-    static var previews: some View {
-        LastView()
-    }
-}

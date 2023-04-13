@@ -114,12 +114,6 @@ struct MindView: View {
     }
 }
 
-struct MindView_Previews: PreviewProvider {
-    static var previews: some View {
-        MindView()
-    }
-}
-
 class SoundManager {
     static let instance = SoundManager()
     var player: AVAudioPlayer?
